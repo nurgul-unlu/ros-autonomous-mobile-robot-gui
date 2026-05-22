@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <xacro:macro name="otonom_robot_laser" params="name x y z rpy_konum">
+    <link name="${name}_link">
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <box size="0.01 0.02 0.005"/>
+        </geometry>
+      </collision>
+
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <box size="0.01 0.02 0.005"/>
+        </geometry>
+      </visual>
+
+      <xacro:box_inertial x="0.01" y="0.02" z="0.005" mass="0.02"/>
+    </link>
+
+    <joint name="base_to_${name}" type="fixed">
+      <origin xyz="${x} ${y} ${z}" rpy="${rpy_konum}"/>
+      <parent link="base_link"/>
+      <child link="${name}_link"/>
+    </joint>
+
+    <gazebo reference="${name}_link">
+      <material>Gazebo/Blue</material>
+
+      <!-- GPU yerine klasik ray: daha stabil -->
+      <sensor type="ray" name="${name}_sensor">
+        <pose>0 0 0 0 0 0</pose>
+        <visualize>true</visualize>
+        <update_rate>40</update_rate>
+
+        <ray>
+          <scan>
+            <horizontal>
+              <samples>720</samples>
+              <resolution>1</resolution>
+              <min_angle>-0.5</min_angle>
+              <max_angle>0.5</max_angle>
+            </horizontal>
+          </scan>
+
+          <range>
+            <min>0.10</min>
+            <max>30.0</max>
+            <resolution>0.01</resolution>
+          </range>
+
+          <noise>
+            <type>gaussian</type>
+            <mean>0.0</mean>
+            <stddev>0.01</stddev>
+          </noise>
+        </ray>
+
+        <!-- Klasik laser plugin -->
+        <plugin name="${name}_plugin" filename="libgazebo_ros_laser.so">
+          <topicName>/${name}/scan</topicName>
+          <frameName>${name}_link</frameName>
+        </plugin>
+
+      </sensor>
+    </gazebo>
+
+  </xacro:macro>
+
+</robot>
+

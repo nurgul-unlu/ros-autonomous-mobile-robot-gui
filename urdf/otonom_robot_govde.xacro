@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<robot name="otonom_robot" xmlns:xacro="http://ros.org/wiki/xacro"> 
+  <xacro:include filename="$(find otonom_robot)/urdf/otonom_robot_taban.xacro"/>
+  <xacro:include filename="$(find otonom_robot)/urdf/otonom_robot_inertia.xacro"/>
+  <xacro:include filename="$(find otonom_robot)/urdf/otonom_robot_tekerlek.xacro"/>
+  <xacro:include filename="$(find otonom_robot)/urdf/otonom_robot_diferansiyel.xacro"/>
+  <xacro:include filename="$(find otonom_robot)/urdf/otonom_robot_laser.xacro"/>
+  <xacro:include filename="$(find otonom_robot)/urdf/otonom_robot_kamera.xacro"/>
+  
+  <xacro:otonom_robot_taban />
+  <xacro:otonom_robot_tekerlek xyz_konum="0.0 0.060 -0.0175" rpy_konum="0 0 0 " yon="left"/>
+  <xacro:otonom_robot_tekerlek xyz_konum="0.0 -0.060 -0.0175" rpy_konum="0 0 0" yon="right"/>
+  <xacro:otonom_robot_sarhos_tekerlek xyz_konum="0.0685 0.0 -0.0275" rpy_konum="0 0 0" yon="front"/>
+  <xacro:otonom_robot_sarhos_tekerlek xyz_konum="-0.0685 0.0 -0.0275" rpy_konum="0 0 0" yon="back"/>
+  <xacro:otonom_robot_diferansiyel />
+  <xacro:otonom_robot_laser name="laser_front" x="0.09" y="0.0" z="0.0175" rpy_konum="0 0 0"/>
+  <xacro:otonom_robot_laser name="laser_left" x="0.0" y="0.055" z="0.0175" rpy_konum="0 0 1.5707"/>
+  <xacro:otonom_robot_laser name="laser_right" x="0.0" y="-0.055" z="0.0175" rpy_konum="0 0 -1.5707"/>
+  <xacro:otonom_robot_kamera />
+
+</robot>

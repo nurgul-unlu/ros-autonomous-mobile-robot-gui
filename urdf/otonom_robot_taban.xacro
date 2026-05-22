@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <xacro:macro name="otonom_robot_taban">
+    <!-- 2D referans: boş -->
+    <link name="base_footprint"/>
+
+    <!-- Fiziksel gövde -->
+    <link name="base_link">
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <box size="0.18 0.11 0.035"/>
+        </geometry>
+      </collision>
+
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <box size="0.18 0.11 0.035"/>
+        </geometry>
+      </visual>
+
+      <xacro:box_inertial x="0.18" y="0.11" z="0.035" mass="10.0"/>
+    </link>
+
+    <!-- base_footprint her zaman düz -->
+    <joint name="base_footprint_to_base_link" type="fixed">
+      <parent link="base_footprint"/>
+      <child link="base_link"/>
+      <!-- gövde yüksekliği: kutunun yarısı kadar -->
+      <origin xyz="0 0 0.0175" rpy="0 0 0"/>
+    </joint>
+
+    <gazebo reference="base_link">
+      <material>Gazebo/Green</material>
+    </gazebo>
+  </xacro:macro>
+
+</robot>
+

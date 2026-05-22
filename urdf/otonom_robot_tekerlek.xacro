@@ -1,0 +1,84 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:macro name="otonom_robot_tekerlek" params="xyz_konum rpy_konum yon">
+
+    <link name="wheel_${yon}_link">
+      <collision>
+        <origin xyz="0 0 0" rpy="1.570796 0 0"/>
+        <geometry>
+          <cylinder radius="0.02" length="0.01"/>
+        </geometry>
+      </collision>
+
+      <visual>
+        <origin xyz="0 0 0" rpy="1.570796 0 0"/>
+        <geometry>
+          <cylinder radius="0.02" length="0.01"/>
+        </geometry>
+      </visual>
+
+      <!-- Bu macro başka dosyada tanımlı olmalı -->
+      <xacro:cylinder_inertial radius="0.02" length="0.01" mass="0.3"/>
+    </link>
+
+    <joint name="wheel_${yon}_base" type="continuous">
+      <origin xyz="${xyz_konum}" rpy="${rpy_konum}"/>
+      <parent link="base_link"/>
+      <child link="wheel_${yon}_link"/>
+      <axis xyz="0 1 0"/>
+    </joint>
+     <gazebo reference="wheel_${yon}_link">
+      <material value="Gazebo/Black"/>
+      <!-- tahrikli teker sürtünmesi -->
+      <mu1>0.8</mu1>
+      <mu2>0.8</mu2>
+      <kp>100000</kp>
+      <kd>100</kd>
+    </gazebo>
+
+
+  </xacro:macro>
+  
+   <xacro:macro name="otonom_robot_sarhos_tekerlek" params="xyz_konum rpy_konum yon">
+
+    <link name="caster_wheel_${yon}_link">
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <sphere radius="0.01"/>
+        </geometry>
+      </collision>
+
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <sphere radius="0.01"/>
+        </geometry>
+      </visual>
+
+      <!-- Bu macro başka dosyada tanımlı olmalı -->
+      <xacro:sphere_inertial radius="0.01" mass="0.03"/>
+    </link>
+
+    <joint name="caster_wheel_${yon}_base" type="fixed">
+      <origin xyz="${xyz_konum}" rpy="${rpy_konum}"/>
+      <parent link="base_link"/>
+      <child link="caster_wheel_${yon}_link"/>
+      
+    </joint>
+
+    <gazebo reference="caster_wheel_${yon}_link">
+      <material value="Gazebo/White"/>
+      <!-- caster sürtünmesi düşük -->
+      <mu1>0.05</mu1>
+      <mu2>0.05</mu2>
+      <kp>100000</kp>
+      <kd>100</kd>
+    </gazebo>
+
+  </xacro:macro>
+
+
+</robot>
+

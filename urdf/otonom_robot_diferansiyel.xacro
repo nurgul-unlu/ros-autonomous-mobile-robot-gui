@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:macro name="otonom_robot_diferansiyel">
+    <gazebo>
+     <plugin name="differential_drive_controller" filename="libgazebo_ros_diff_drive.so">
+      <robotNamespace>/</robotNamespace>
+
+      <updateRate>50.0</updateRate>
+
+      <leftJoint>wheel_left_base</leftJoint>
+      <rightJoint>wheel_right_base</rightJoint>
+
+      <wheelSeparation>0.11</wheelSeparation>
+      <wheelDiameter>0.04</wheelDiameter>
+
+      <wheelAcceleration>2.0</wheelAcceleration>
+      <wheelTorque>20</wheelTorque>
+
+      <commandTopic>/cmd_vel</commandTopic>
+      <odometryTopic>/odom</odometryTopic>
+
+      <odometryFrame>odom</odometryFrame>
+      <robotBaseFrame>base_footprint</robotBaseFrame>
+
+      <publishTf>true</publishTf>
+      <publishOdom>true</publishOdom>
+      <publishWheelJointState>true</publishWheelJointState>
+      <publishWheelTF>false</publishWheelTF>
+
+      <odometrySource>0</odometrySource>
+      <legacyMode>false</legacyMode>
+     </plugin>
+    </gazebo>
+  </xacro:macro>
+</robot>
+
