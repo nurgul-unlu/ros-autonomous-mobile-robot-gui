@@ -69,4 +69,4 @@ catkin_make
 
 source devel/setup.bash
 
-roslaunch otonom_robot bringup.launch
+roslaunch otonom_robot sotonom_robot.launch
