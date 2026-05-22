@@ -12,6 +12,8 @@ A custom PyQt5 GUI was also developed for:
 - Manual robot control
 - Adjustable linear and angular velocity
 - Semi-autonomous driving
+![Uploading Ekran görüntüsü 2026-05-22 221125.png…]()
+
 
 ---
 
