@@ -13,7 +13,7 @@ A custom PyQt5 GUI was also developed for:
 - Adjustable linear and angular velocity
 - Semi-autonomous driving
 
-  <img width="500" height="722" alt="Ekran görüntüsü 2026-01-13 141455" src="https://github.com/user-attachments/assets/46983b7c-8f27-4115-9325-fa0e814fcdaa" /> <img width="400" height="562" alt="Ekran görüntüsü 2026-05-22 221125" src="https://github.com/user-attachments/assets/5c7c79a8-f0a1-48f7-b237-45b7f796b047" /
+  <img width="500" height="722" alt="Ekran görüntüsü 2026-05-22 221125" src="https://github.com/user-attachments/assets/46983b7c-8f27-4115-9325-fa0e814fcdaa" /> <img width="400" height="562" alt="Ekran görüntüsü 2026-05-22 221125" src="https://github.com/user-attachments/assets/5c7c79a8-f0a1-48f7-b237-45b7f796b047" /
 
 
 ---
