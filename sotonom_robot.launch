@@ -1,0 +1,121 @@
+<launch>
+
+  <!-- ===================== -->
+  <!-- Genel Ayarlar -->
+  <!-- ===================== -->
+  <param name="use_sim_time" value="true"/>
+
+  <arg name="x" default="0.0"/>
+  <arg name="y" default="0.0"/>
+  <arg name="z" default="0.0"/>
+  <arg name="world_name" default="$(find deneme_ortam)/worlds/deneme_ortam.world"/>
+
+  <!-- ===================== -->
+  <!-- Gazebo -->
+  <!-- ===================== -->
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="world_name" value="$(arg world_name)"/>
+    <arg name="paused" value="false"/>
+    <arg name="use_sim_time" value="true"/>
+    <arg name="gui" value="true"/>
+  </include>
+
+  <!-- ===================== -->
+  <!-- Robot Description -->
+  <!-- ===================== -->
+  <param name="robot_description"
+         command="$(find xacro)/xacro --inorder $(find otonom_robot)/urdf/otonom_robot_govde.xacro"/>
+
+  <!-- ===================== -->
+    <node name="delete_otonom_robot"
+        pkg="gazebo_ros"
+        type="delete_model"
+        args="-model otonom_robot"
+        output="screen"/>
+  <!-- Robot Spawn -->
+  <!-- ===================== -->
+  <node name="spawn_urdf"
+        pkg="gazebo_ros"
+        type="spawn_model"
+        args="-urdf -param robot_description -model otonom_robot -x $(arg x) -y $(arg y) -z $(arg z)"
+        output="screen"/>
+
+  <!-- ===================== -->
+  <!-- Joint + Robot State Publisher -->
+  <!-- ===================== -->
+  
+
+  <node pkg="robot_state_publisher"
+        type="robot_state_publisher"
+        name="robot_state_publisher"
+        output="screen">
+    <param name="publish_frequency" value="30.0"/>
+  </node>
+
+  <!-- ===================== -->
+  <!-- Harita -->
+  <!-- ===================== -->
+  <node pkg="map_server"
+        type="map_server"
+        name="map_server"
+        output="screen"
+        args="$(find otonom_robot)/map/harita_ortam.yaml"/>
+
+  <!-- ===================== -->
+  <!-- AMCL -->
+  <!-- ===================== -->
+  <node pkg="amcl" type="amcl" name="amcl" output="screen">
+    <param name="use_map_topic" value="true"/>
+    <param name="odom_model_type" value="diff"/>
+    <param name="transform_tolerance" value="0.5"/>
+    <param name="gui_publish_rate" value="10.0"/>
+    <param name="laser_max_beams" value="60"/>
+    <param name="min_particles" value="300"/>
+    <param name="max_particles" value="2000"/>
+    <param name="kld_err" value="0.05"/>
+    <param name="kld_z" value="0.99"/>
+    <param name="update_min_d" value="0.10"/>
+    <param name="update_min_a" value="0.10"/>
+    <param name="resample_interval" value="1"/>
+
+    <param name="global_frame_id" value="map"/>
+    <param name="odom_frame_id" value="odom"/>
+    <param name="base_frame_id" value="base_footprint"/>
+    <param name="tf_broadcast" value="true"/>
+
+    <remap from="map" to="/map"/>
+    <remap from="scan" to="/laser_front/scan"/>
+  </node>
+
+  <!-- ===================== -->
+  <!-- move_base -->
+  <!-- ===================== -->
+  <node pkg="move_base" type="move_base" name="move_base" output="screen">
+    <rosparam file="$(find otonom_robot)/config/otonom_move_base.yaml" command="load"/>
+    <rosparam file="$(find otonom_robot)/config/costmap_common_params.yaml" command="load"/>
+    <rosparam file="$(find otonom_robot)/config/global_costmap_params.yaml" command="load"/>
+    <rosparam file="$(find otonom_robot)/config/local_costmap_params.yaml" command="load"/>
+  </node>
+
+  <!-- ===================== -->
+  <!-- RViz -->
+  <!-- ===================== -->
+  <node pkg="rviz"
+        type="rviz"
+        name="rviz"
+        args="-d $(find otonom_robot)/rviz/otonom_robot2.rviz"
+        output="screen"/>
+     
+   <!-- ===================== -->
+<!-- STM32 Bridge -->
+<!-- ===================== -->
+<node pkg="otonom_robot"
+      type="cmd_vel_to_stm32.py"
+      name="arduino_bridge"
+      output="screen">
+    <param name="port" value="/dev/ttyACM0"/>
+    <param name="baud" value="115200"/>
+    <param name="topic" value="/cmd_vel_nav"/>
+</node>
+
+</launch>
